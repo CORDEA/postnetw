@@ -58,5 +58,12 @@ splitQuery "" arr = arr
 splitQuery (f:q) arr =
     splitQuery q $ arr ++ (digitToInt f):[]
 
+asCode :: [Int] -> [Int] -> [Int]
+asCode [] arr = arr
+asCode (f:q) arr =
+    asCode q $ arr ++ c
+    where
+        c = table !! (f - 1)
+
 main :: IO ()
 main = saveImage $ asImage

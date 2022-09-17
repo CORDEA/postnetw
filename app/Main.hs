@@ -65,5 +65,14 @@ asCode (f:q) arr =
     where
         c = table !! (f - 1)
 
+build :: String -> [Int]
+build str =
+    asCode query []
+    where
+        query = splitQuery str []
+
 main :: IO ()
-main = saveImage $ asImage
+main =
+    putStrLn $ show code
+    where
+        code = build "12345"

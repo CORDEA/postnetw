@@ -1,5 +1,6 @@
 module Main where
 
+import Data.Char(digitToInt)
 import Codec.Picture
 
 table :: [[Int]]
@@ -51,6 +52,11 @@ asImage =
     where
         width = 200
         height = 100
+
+splitQuery :: String -> [Int] -> [Int]
+splitQuery "" arr = arr
+splitQuery (f:q) arr =
+    splitQuery q $ arr ++ (digitToInt f):[]
 
 main :: IO ()
 main = saveImage $ asImage

@@ -67,9 +67,11 @@ asCode (f:q) arr =
 
 build :: String -> [Int]
 build str =
-    asCode query []
+    fb ++ code ++ fb
     where
         query = splitQuery str []
+        code = asCode query []
+        fb = 1:[]
 
 main :: IO ()
 main =

@@ -65,7 +65,11 @@ bar (height, v) =
     pad ++ bar ++ pad
     where
         pad = padding (horizontalPadding, height)
-        bar = map(\x -> map (\y -> black) [1..height]) [1..barWidth]
+        offset = if (v == 0)
+            then height - halfBarHeight - verticalPadding
+            else verticalPadding
+        yfn = \y -> if (y > offset && y <= height - verticalPadding) then black else white
+        bar = map(\_ -> map yfn [1..height]) [1..barWidth]
 
 asPixels :: [Int] -> [[PixelRGB8]]
 asPixels code =

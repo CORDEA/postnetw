@@ -42,16 +42,36 @@ output = "code.png"
 white :: PixelRGB8
 white = PixelRGB8 0xff 0xff 0xff
 
+black :: PixelRGB8
+black = PixelRGB8 0x00 0x00 0x00
+
 saveImage :: Image PixelRGB8 -> IO ()
 saveImage img =
     savePngImage output $ ImageRGB8 img
 
-asImage :: Image PixelRGB8
-asImage =
-    generateImage (\_ _ -> white) width height
+asImage :: [[PixelRGB8]] -> Image PixelRGB8
+asImage pixels =
+    generateImage (\x y -> pixels !! x !! y) width height
     where
-        width = 200
-        height = 100
+        width = length pixels
+        height = length $ pixels !! 0
+
+padding :: (Int, Int) -> [[PixelRGB8]]
+padding (width, height) =
+    map (\_ -> map (\_ -> white) [1..height]) [1..width]
+
+bar :: (Int, Int) -> [[PixelRGB8]]
+bar (height, v) =
+    pad ++ bar ++ pad
+    where
+        pad = padding (horizontalPadding, height)
+        bar = map(\x -> map (\y -> black) [1..height]) [1..barWidth]
+
+asPixels :: [Int] -> [[PixelRGB8]]
+asPixels code =
+    foldl (\l v -> l ++ (bar (height, v))) [] code
+    where
+        height = barHeight + verticalPadding * 2
 
 splitQuery :: String -> [Int] -> [Int]
 splitQuery "" arr = arr
@@ -82,6 +102,7 @@ build str =
 
 main :: IO ()
 main =
-    putStrLn $ show code
+    saveImage image
     where
         code = build "12345"
+        image = asImage $ asPixels code

@@ -1,7 +1,8 @@
 module Main where
 
-import Data.Char(digitToInt)
 import Codec.Picture
+import Data.Char(digitToInt)
+import System.Environment(getArgs)
 
 table :: [[Int]]
 table =
@@ -107,8 +108,8 @@ build str =
         cd = table !! (checkDigit query - 1)
 
 main :: IO ()
-main =
+main = do
+    args <- getArgs
+    let code = build $ args !! 0
+    let image = asImage $ asPixels code
     saveImage image
-    where
-        code = build "12345"
-        image = asImage $ asPixels code

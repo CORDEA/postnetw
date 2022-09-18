@@ -65,13 +65,20 @@ asCode (f:q) arr =
     where
         c = table !! (f - 1)
 
+checkDigit :: [Int] -> Int
+checkDigit arr =
+    10 - (rem s 10)
+    where
+        s = sum arr
+
 build :: String -> [Int]
 build str =
-    fb ++ code ++ fb
+    fb ++ code ++ cd ++ fb
     where
         query = splitQuery str []
         code = asCode query []
         fb = 1:[]
+        cd = table !! (checkDigit query - 1)
 
 main :: IO ()
 main =

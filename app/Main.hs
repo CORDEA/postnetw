@@ -73,9 +73,11 @@ bar (height, v) =
 
 asPixels :: [Int] -> [[PixelRGB8]]
 asPixels code =
-    foldl (\l v -> l ++ (bar (height, v))) [] code
+    pad ++ bars ++ pad
     where
         height = barHeight + verticalPadding * 2
+        pad = padding (quietZone, height)
+        bars = foldl (\l v -> l ++ (bar (height, v))) [] code
 
 splitQuery :: String -> [Int] -> [Int]
 splitQuery "" arr = arr
